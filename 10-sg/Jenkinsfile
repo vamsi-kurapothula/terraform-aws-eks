@@ -37,7 +37,7 @@ pipeline {
                 }
             }
         }
-    }
+    
         stage('plan') {
             steps {
                 script {
@@ -82,29 +82,35 @@ pipeline {
                         }       
                     }
                 }
+                stage('acm alb') {
+                    stages{
+                        stage('Trigger acm') {
+                            steps {
+                                script {
+                                    build job: '60-acm',
+                                    wait: false, // vpc will not wait for sg pipeline completion
+                                    propagate: false // even sg fails vpc will not be affected
+                                }       
+                            }
+                        }
+                        stage('Trigger alb') {
+                            steps {
+                                script {
+                                    build job: '70-frontend-alb',
+                                    wait: false, // vpc will not wait for sg pipeline completion
+                                    propagate: false // even sg fails vpc will not be affected
+                                }       
+                            }
+                        }
+                    }
+                }
             }
-        stage('acm alb') {
-                stage('Trigger acm') {
-                        steps {
-                            script {
-                                build job: '60-acm',
-                                wait: false, // vpc will not wait for sg pipeline completion
-                                propagate: false // even sg fails vpc will not be affected
-                            }       
-                        }
-                }
         }
-                stage('Trigger alb') {
-                        steps {
-                            script {
-                                build job: '70-frontend-alb',
-                                wait: false, // vpc will not wait for sg pipeline completion
-                                propagate: false // even sg fails vpc will not be affected
-                            }       
-                        }
-                
-                }
-}
+    }
+
+               
+       
+
 
     post { 
         always { 
@@ -119,6 +125,7 @@ pipeline {
         }
     }
 }
+
 
 
     

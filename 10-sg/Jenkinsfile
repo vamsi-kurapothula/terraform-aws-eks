@@ -37,6 +37,7 @@ pipeline {
                 }
             }
         }
+    }
         stage('plan') {
             steps {
                 script {
@@ -81,7 +82,8 @@ pipeline {
                         }       
                     }
                 }
-            stage('acm alb') {
+            }
+        stage('acm alb') {
                 stage('Trigger acm') {
                         steps {
                             script {
@@ -91,6 +93,7 @@ pipeline {
                             }       
                         }
                 }
+        }
                 stage('Trigger alb') {
                         steps {
                             script {
@@ -99,13 +102,10 @@ pipeline {
                                 propagate: false // even sg fails vpc will not be affected
                             }       
                         }
+                
                 }
-                }
+}
 
-                  }      
-            }
-        }
-    }
     post { 
         always { 
             echo 'I will always say Hello again!'
@@ -118,6 +118,7 @@ pipeline {
             echo 'hi, this is failure'
         }
     }
+}
 
 
     

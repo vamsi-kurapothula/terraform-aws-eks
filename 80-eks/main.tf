@@ -3,7 +3,7 @@ module "eks" {
   version = "~> 21.0" # this is module version
 
   name               = "${var.project}-${var.environment}"
-  kubernetes_version = "1.33"
+  kubernetes_version = "1.32"
 
   addons = {
     coredns                = {}
